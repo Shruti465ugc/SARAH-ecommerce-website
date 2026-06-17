@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SARAH — Luxury Women's Fashion</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="responsive.css" />
+  <link rel="stylesheet" href="checkout.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-logo">SARAH</div>
+    <div class="loading-bar"><span></span></div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- BACK TO TOP -->
+  <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- FLOATING CART PREVIEW -->
+  <div id="cart-preview" class="cart-preview hidden">
+    <div class="cart-preview-header">
+      <span>Shopping Bag</span>
+      <button id="close-cart-preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="cart-preview-items" class="cart-preview-items"></div>
+    <div class="cart-preview-footer">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <span id="cart-preview-total">₹0</span>
+      </div>
+      <a href="#" class="btn-primary full-width" id="checkout-btn">Checkout</a>
+      <a href="#" class="btn-outline full-width" id="view-cart-btn">View Bag</a>
+    </div>
+  </div>
+  <div id="cart-overlay" class="cart-overlay hidden"></div>
+
+  <!-- QUICK VIEW MODAL -->
+  <div id="quick-view-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <header id="navbar" class="navbar">
+    <div class="nav-container">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="nav-links">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#shop" class="nav-link">Shop</a>
+        <a href="#new-arrivals" class="nav-link">New Arrivals</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#sale" class="nav-link">Sale</a>
+      </nav>
+      <a href="#home" class="nav-logo">SARAH</a>
+      <div class="nav-actions">
+        <a href="#about" class="nav-link nav-link-right hide-mobile">About</a>
+        <a href="#contact" class="nav-link nav-link-right hide-mobile">Contact</a>
+        <button class="nav-link nav-link-right hide-mobile" id="my-orders-nav" style="background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);padding:0;transition:color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Orders</button>
+        <button class="icon-btn" id="search-toggle" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button class="icon-btn" id="wishlist-btn" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="badge" id="wishlist-count">0</span>
+        </button>
+        <button class="icon-btn" id="cart-toggle-btn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="badge" id="cart-count">0</span>
+        </button>
+        <button class="icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- SEARCH BAR -->
+    <div class="search-bar" id="search-bar">
+      <div class="search-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Search for dresses, tops, handbags…" />
+        <button id="search-close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+      <div class="hero-bg">
+        <div class="hero-gradient"></div>
+        <div class="hero-pattern"></div>
+      </div>
+      <div class="hero-content fade-in-up">
+        <p class="hero-eyebrow">New Season · 2026</p>
+        <h1 class="hero-title">Elevate Your<br/><em>Style</em> with SARAH</h1>
+        <p class="hero-sub">Luxury Fashion Designed for Modern Women</p>
+        <div class="hero-actions">
+          <a href="#new-arrivals" class="btn-primary">Shop Now</a>
+          <a href="#categories" class="btn-ghost">Explore Collections</a>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
+      <!-- Hero floating cards -->
+      <div class="hero-badge hero-badge-1 float-anim">
+        <span class="badge-label">New In</span>
+        <span class="badge-value">200+ Styles</span>
+      </div>
+      <div class="hero-badge hero-badge-2 float-anim-reverse">
+        <span class="badge-label">Free Shipping</span>
+        <span class="badge-value">Above ₹2999</span>
+      </div>
+    </section>
+
+    <!-- MARQUEE TICKER -->
+    <div class="marquee-strip">
+      <div class="marquee-track">
+        <span>Free Shipping Above ₹2999</span><span class="sep">✦</span>
+        <span>New Summer Collection 2026</span><span class="sep">✦</span>
+        <span>Exclusive Members-Only Sale</span><span class="sep">✦</span>
+        <span>Easy 30-Day Returns</span><span class="sep">✦</span>
+        <span>Free Shipping Above ₹2999</span><span class="sep">✦</span>
+        <span>New Summer Collection 2026</span><span class="sep">✦</span>
+        <span>Exclusive Members-Only Sale</span><span class="sep">✦</span>
+        <span>Easy 30-Day Returns</span><span class="sep">✦</span>
+      </div>
+    </div>
+
+    <!-- FEATURED CATEGORIES -->
+    <section id="categories" class="section categories-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">Curated For You</p>
+          <h2 class="section-title">Shop By Category</h2>
+        </div>
+        <div class="categories-grid">
+          <div class="cat-card reveal" data-cat="Dresses" style="--delay:0s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#e8cfc3,#c9a27e);">
+                <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&q=80&fit=crop" alt="Dresses" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Dresses</h3>
+              <p>128 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Dresses')">Explore</button>
+            </div>
+          </div>
+          <div class="cat-card reveal" data-cat="Tops" style="--delay:0.1s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#f0e6e0,#d4a896);">
+                <img src="https://plus.unsplash.com/premium_photo-1689977492903-bd8d201af5bd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dG9wcyUyMGZvciUyMHdvbWVufGVufDB8fDB8fHww" alt="Tops" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Tops</h3>
+              <p>94 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Tops')">Explore</button>
+            </div>
+          </div>
+          <div class="cat-card reveal" data-cat="Ethnic Wear" style="--delay:0.2s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#c9a27e,#a07855);">
+                <img src="https://images.unsplash.com/photo-1756483509254-3cc48a5a15b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXRobmljJTIwd2VhcnxlbnwwfHwwfHx8MA%3D%3D" alt="Ethnic Wear" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Ethnic Wear</h3>
+              <p>76 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Ethnic Wear')">Explore</button>
+            </div>
+          </div>
+          <div class="cat-card reveal" data-cat="Co-Ords" style="--delay:0.3s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#e8d5c9,#c4957a);">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop" alt="Tops" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Co-Ords</h3>
+              <p>52 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Co-Ords')">Explore</button>
+            </div>
+          </div>
+          <div class="cat-card reveal" data-cat="Handbags" style="--delay:0.4s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#d4bfb0,#b08a6e);">
+                <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&fit=crop" alt="Handbags" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Handbags</h3>
+              <p>38 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Handbags')">Explore</button>
+            </div>
+          </div>
+          <div class="cat-card reveal" data-cat="Accessories" style="--delay:0.5s">
+            <div class="cat-img-wrap">
+              <div class="cat-img" style="background: linear-gradient(135deg,#f5ece6,#ddb99a);">
+                <img src="https://plus.unsplash.com/premium_photo-1661645433820-24c8604e4db5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8d29tZW4lMjBhY2Nlc3Nvcmllc3xlbnwwfHwwfHx8MA%3D%3D" alt="Accessories" class="cat-real-img" />
+              </div>
+            </div>
+            <div class="cat-overlay">
+              <h3>Accessories</h3>
+              <p>160 styles</p>
+              <button class="cat-btn" onclick="filterByCategory('Accessories')">Explore</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW ARRIVALS + FILTER -->
+    <section id="new-arrivals" class="section shop-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">Just Dropped</p>
+          <h2 class="section-title">New Arrivals</h2>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar reveal" id="filter-bar">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="new">New</button>
+          <button class="filter-btn" data-filter="bestseller">Best Sellers</button>
+          <button class="filter-btn" data-filter="sale">On Sale</button>
+          <button class="filter-btn" data-filter="Dresses">Dresses</button>
+          <button class="filter-btn" data-filter="Tops">Tops</button>
+          <button class="filter-btn" data-filter="Ethnic Wear">Ethnic</button>
+          <button class="filter-btn" data-filter="Co-Ords">Co-Ords</button>
+          <button class="filter-btn" data-filter="Handbags">Bags</button>
+          <button class="filter-btn" data-filter="Accessories">Accessories</button>
+          <div class="filter-price-wrap">
+            <select id="price-filter" class="price-filter">
+              <option value="all">All Prices</option>
+              <option value="under2000">Under ₹2,000</option>
+              <option value="2000-5000">₹2,000 – ₹5,000</option>
+              <option value="above5000">Above ₹5,000</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Skeleton + Products Grid -->
+        <div class="products-grid" id="products-grid">
+          <!-- Skeleton cards shown initially -->
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div></div>
+          <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-text"></div><div class="skeleton-text short"></div></div>
+        </div>
+
+        <div class="section-cta reveal">
+          <button class="btn-outline" id="load-more-btn">Load More</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRENDING COLLECTION BANNER -->
+    <section id="sale" class="trending-banner">
+      <div class="trending-content reveal">
+        <p class="section-eyebrow light">Limited Edition</p>
+        <h2 class="trending-title">Summer Collection<br/><em>2026</em></h2>
+        <p class="trending-sub">Breathe in elegance. Bold silhouettes, sun-kissed palettes — made for women who live beautifully.</p>
+        <a href="#new-arrivals" class="btn-primary">Shop Collection</a>
+      </div>
+      
+    </section>
+
+    <!-- BEST SELLERS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">Customer Favourites</p>
+          <h2 class="section-title">Best Sellers</h2>
+        </div>
+        <div class="products-grid" id="bestsellers-grid"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT BRAND -->
+    <section id="about" class="section about-section">
+      <div class="container about-container">
+        <div class="about-visual reveal">
+          <div class="about-art">
+            <div class="about-shape shape-1"></div>
+            <div class="about-shape shape-2"></div>
+            <div class="about-letter">S</div>
+          </div>
+          <div class="about-stats">
+            <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">Happy Customers</span></div>
+            <div class="stat"><span class="stat-num">500+</span><span class="stat-label">Luxury Styles</span></div>
+            <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label">Average Rating</span></div>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p class="section-eyebrow">Our Story</p>
+          <h2 class="section-title">Fashion That<br/><em>Empowers</em></h2>
+          <p class="about-body">SARAH was born from a simple belief — every woman deserves to feel extraordinary in what she wears. We craft each piece with intention, using premium fabrics and timeless silhouettes that transcend seasons.</p>
+          <p class="about-body">Our mission: <strong>Empowering women through timeless fashion and premium quality clothing.</strong> From the boardroom to brunch, SARAH dresses the modern woman who leads with confidence and grace.</p>
+          <div class="about-pillars">
+            <div class="pillar"><span class="pillar-icon">✦</span><span>Premium Quality</span></div>
+            <div class="pillar"><span class="pillar-icon">✦</span><span>Sustainable Practices</span></div>
+            <div class="pillar"><span class="pillar-icon">✦</span><span>Timeless Design</span></div>
+          </div>
+          <a href="#new-arrivals" class="btn-primary">Discover Our Story</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testimonials-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">Word of Mouth</p>
+          <h2 class="section-title">What Our Clients Say</h2>
+        </div>
+        <div class="testimonials-grid" id="testimonials-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTAGRAM GALLERY -->
+    <section class="section insta-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <p class="section-eyebrow">@sarah.luxe</p>
+          <h2 class="section-title">The SARAH Lookbook</h2>
+        </div>
+      </div>
+      <div class="insta-grid" id="insta-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section id="contact" class="section newsletter-section">
+      <div class="container">
+        <div class="newsletter-card reveal">
+          <div class="newsletter-deco"></div>
+          <p class="section-eyebrow light">Stay In The Loop</p>
+          <h2 class="newsletter-title">Join the SARAH Circle</h2>
+          <p class="newsletter-sub">Be first to know about exclusive drops, member-only sales, and style inspiration.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <input type="email" id="newsletter-email" placeholder="Enter your email address" required />
+            <button type="submit" class="btn-primary">Subscribe</button>
+          </form>
+          <p class="newsletter-note" id="newsletter-msg"></p>
+          <p class="newsletter-disclaimer">By subscribing you agree to our privacy policy. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">SARAH</div>
+        <p class="footer-tagline">Luxury Fashion for the Modern Woman</p>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" aria-label="Pinterest" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.99.04-2.85.18-.75 1.22-5.17 1.22-5.17s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.33.67 1.33 1.48 0 .9-.58 2.25-.88 3.5-.25 1.04.52 1.88 1.54 1.88 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.34-4.24-2.96 0-4.69 2.22-4.69 4.51 0 .89.34 1.85.77 2.37.08.1.09.19.07.3-.08.32-.25 1.04-.29 1.18-.05.19-.16.23-.37.14-1.39-.65-2.26-2.68-2.26-4.32 0-3.51 2.55-6.74 7.35-6.74 3.86 0 6.86 2.75 6.86 6.42 0 3.83-2.41 6.9-5.76 6.9-1.13 0-2.19-.59-2.55-1.28l-.69 2.58c-.25.96-.93 2.17-1.39 2.9.05 0 .1.01.15.01 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a href="#" aria-label="Facebook" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#new-arrivals">New Arrivals</a></li>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#sale">Sale</a></li>
+          <li><a href="#about">About SARAH</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Customer Support</h4>
+        <ul class="footer-links">
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Track Your Order</a></li>
+          <li><a href="#">Returns & Exchanges</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-heading">Contact Us</h4>
+        <ul class="footer-links no-links">
+          <li>📧 hello@sarahfashion.com</li>
+          <li>📞 +91 98765 43210</li>
+          <li>📍 Mumbai, Maharashtra, India</li>
+          <li>⏰ Mon–Sat: 10am – 7pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 SARAH Luxury Fashion. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       CHECKOUT OVERLAY
+       ============================================================ -->
+  <div id="checkout-overlay">
+    <div class="checkout-sheet">
+
+      <!-- Header -->
+      <div class="checkout-header">
+        <span class="checkout-logo">SARAH</span>
+        <div class="checkout-steps">
+          <div class="checkout-step active" data-step="1">
+            <span class="step-num">1</span>
+            <span>Delivery</span>
+          </div>
+          <div class="step-divider"></div>
+          <div class="checkout-step" data-step="2">
+            <span class="step-num">2</span>
+            <span>Payment</span>
+          </div>
+          <div class="step-divider"></div>
+          <div class="checkout-step" data-step="3">
+            <span class="step-num">3</span>
+            <span>Review</span>
+          </div>
+        </div>
+        <button class="checkout-close" id="checkout-close-btn" aria-label="Close checkout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="checkout-body">
+
+        <!-- LEFT: panels -->
+        <div class="checkout-main">
+
+          <!-- PANEL 1: ADDRESS -->
+          <div class="checkout-panel active" id="checkout-panel-1">
+            <h2 class="panel-title">Delivery Address</h2>
+            <div id="saved-address-banner" class="saved-address-banner" style="display:none;"></div>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="addr-name">Full Name</label>
+                <input type="text" id="addr-name" placeholder="e.g. Priya Sharma" autocomplete="name" />
+                <span class="field-error">Full Name is required</span>
+              </div>
+              <div class="field">
+                <label for="addr-mobile">Mobile Number</label>
+                <input type="tel" id="addr-mobile" placeholder="10-digit mobile" maxlength="10" autocomplete="tel" />
+                <span class="field-error">Enter a valid 10-digit mobile number</span>
+              </div>
+              <div class="field">
+                <label for="addr-email">Email Address</label>
+                <input type="email" id="addr-email" placeholder="you@email.com" autocomplete="email" />
+                <span class="field-error">Enter a valid email address</span>
+              </div>
+              <div class="field full">
+                <label for="addr-address">Street Address</label>
+                <input type="text" id="addr-address" placeholder="House no., Street, Area" autocomplete="street-address" />
+                <span class="field-error">Street Address is required</span>
+              </div>
+              <div class="field">
+                <label for="addr-city">City</label>
+                <input type="text" id="addr-city" placeholder="e.g. Mumbai" autocomplete="address-level2" />
+                <span class="field-error">City is required</span>
+              </div>
+              <div class="field">
+                <label for="addr-state">State</label>
+                <input type="text" id="addr-state" placeholder="e.g. Maharashtra" autocomplete="address-level1" />
+                <span class="field-error">State is required</span>
+              </div>
+              <div class="field">
+                <label for="addr-pincode">Pincode</label>
+                <input type="text" id="addr-pincode" placeholder="6-digit pincode" maxlength="6" autocomplete="postal-code" />
+                <span class="field-error">Enter a valid 6-digit pincode</span>
+              </div>
+            </div>
+            <button class="continue-btn" id="addr-next-btn">Continue to Payment →</button>
+          </div>
+
+          <!-- PANEL 2: PAYMENT -->
+          <div class="checkout-panel" id="checkout-panel-2">
+            <h2 class="panel-title">Payment Method</h2>
+
+            <!-- Coupon -->
+            <div style="margin-bottom:28px;">
+              <p style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">Have a Coupon?</p>
+              <div class="coupon-row">
+                <input type="text" id="coupon-input" placeholder="SARAH10 or WELCOME20" />
+                <button class="apply-coupon-btn" id="apply-coupon-btn">Apply</button>
+              </div>
+              <p class="coupon-msg" id="coupon-msg"></p>
+            </div>
+
+            <!-- Payment options -->
+            <p style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">Select Payment</p>
+            <div class="payment-options">
+
+              <div class="payment-option">
+                <input type="radio" name="payment" id="pay-cod" value="cod" />
+                <span class="payment-icon">💵</span>
+                <label for="pay-cod" class="payment-option-label" style="cursor:pointer;">
+                  <strong>Cash on Delivery</strong>
+                  <span>Pay when your order arrives</span>
+                </label>
+              </div>
+
+              <div class="payment-option">
+                <input type="radio" name="payment" id="pay-upi" value="upi" />
+                <span class="payment-icon">📱</span>
+                <label for="pay-upi" class="payment-option-label" style="cursor:pointer;">
+                  <strong>UPI Payment</strong>
+                  <span>PhonePe, GPay, Paytm & more</span>
+                </label>
+              </div>
+              <!-- UPI fields -->
+              <div class="payment-fields" id="fields-upi">
+                <div class="field">
+                  <label for="upi-id">UPI ID</label>
+                  <input type="text" id="upi-id" placeholder="yourname@upi" />
+                  <span class="field-error">Enter a valid UPI ID</span>
+                </div>
+              </div>
+
+              <div class="payment-option">
+                <input type="radio" name="payment" id="pay-card" value="card" />
+                <span class="payment-icon">💳</span>
+                <label for="pay-card" class="payment-option-label" style="cursor:pointer;">
+                  <strong>Credit / Debit Card</strong>
+                  <span>Visa, Mastercard, RuPay</span>
+                </label>
+              </div>
+              <!-- Card fields -->
+              <div class="payment-fields" id="fields-card">
+                <div class="form-grid">
+                  <div class="field full">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="16-digit card number" maxlength="16" inputmode="numeric" />
+                    <span class="field-error">Enter valid 16-digit card number</span>
+                  </div>
+                  <div class="field full">
+                    <label for="card-name">Cardholder Name</label>
+                    <input type="text" id="card-name" placeholder="Name on card" autocomplete="cc-name" />
+                    <span class="field-error">Enter cardholder name</span>
+                  </div>
+                  <div class="field">
+                    <label for="card-expiry">Expiry Date</label>
+                    <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" />
+                    <span class="field-error">Enter expiry as MM/YY</span>
+                  </div>
+                  <div class="field">
+                    <label for="card-cvv">CVV</label>
+                    <input type="password" id="card-cvv" placeholder="3-4 digits" maxlength="4" />
+                    <span class="field-error">Enter valid CVV</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <button class="continue-btn" id="pay-next-btn">Review Order →</button>
+            <button class="back-btn" id="pay-back-btn">← Back to Address</button>
+          </div>
+
+          <!-- PANEL 3: REVIEW (rendered by JS) -->
+          <div class="checkout-panel" id="checkout-panel-3"></div>
+
+          <!-- SUCCESS STATE -->
+          <div class="success-panel" id="checkout-success"></div>
+        </div>
+
+        <!-- RIGHT: Order Summary -->
+        <div class="checkout-sidebar">
+          <p class="sidebar-title">Order Summary</p>
+          <div class="summary-items" id="co-summary-items"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-row"><span>Subtotal</span><span id="co-subtotal">₹0</span></div>
+          <div class="summary-row"><span>Shipping</span><span id="co-shipping">₹99</span></div>
+          <div class="summary-row"><span>GST (5%)</span><span id="co-gst">₹0</span></div>
+          <div class="summary-row discount" id="co-discount-row"><span>Discount</span><span id="co-discount">—</span></div>
+          <div class="summary-divider"></div>
+          <div class="summary-row total"><span>Grand Total</span><span id="co-grand">₹0</span></div>
+          <div style="margin-top:20px;padding:16px;background:rgba(201,162,126,0.08);border-radius:var(--radius-sm);border:1px solid rgba(201,162,126,0.2);">
+            <p style="font-size:0.72rem;color:var(--text-muted);line-height:1.6;">
+              ✦ Free shipping on orders above ₹2,999<br>
+              ✦ Easy 30-day returns<br>
+              ✦ 100% secure payments
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /checkout-body -->
+    </div><!-- /checkout-sheet -->
+  </div><!-- /checkout-overlay -->
+
+  <!-- ============================================================
+       MY ORDERS OVERLAY
+       ============================================================ -->
+  <div id="orders-overlay">
+    <div class="orders-sheet">
+      <div class="orders-header">
+        <h2>My Orders</h2>
+        <button class="checkout-close" id="orders-close-btn" aria-label="Close orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="orders-body">
+        <div id="orders-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ORDER TRACKING OVERLAY
+       ============================================================ -->
+  <div id="tracking-overlay">
+    <div class="tracking-sheet"></div>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="cart.js"></script>
+  <script src="wishlist.js"></script>
+  <script src="app.js"></script>
+  <script src="checkout.js"></script>
+</body>
+</html>
