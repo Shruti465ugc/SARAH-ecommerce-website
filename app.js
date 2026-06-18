@@ -231,9 +231,7 @@ function renderTestimonials() {
   grid.innerHTML = TESTIMONIALS.map(buildTestimonialCard).join('');
 }
 
-/* ============================================================
-   INSTAGRAM GALLERY
-   ============================================================ */
+
 function renderInstaGrid() {
   const grid = document.getElementById('insta-grid');
   if (!grid) return;
