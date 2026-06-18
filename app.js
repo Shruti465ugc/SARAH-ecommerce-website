@@ -67,9 +67,7 @@ function initHamburger() {
   });
 }
 
-/* ============================================================
-   SEARCH FUNCTIONALITY
-   ============================================================ */
+
 function initSearch() {
   const toggle = document.getElementById('search-toggle');
   const close = document.getElementById('search-close');
@@ -130,9 +128,7 @@ function initSearch() {
   });
 }
 
-/* ============================================================
-   PRODUCT RENDERING & FILTERING
-   ============================================================ */
+
 let currentFilter = 'all';
 let currentPriceFilter = 'all';
 let visibleCount = 8;
@@ -219,9 +215,7 @@ function initFilterBar() {
   });
 }
 
-/* ============================================================
-   BEST SELLERS SECTION
-   ============================================================ */
+
 function renderBestSellers() {
   const grid = document.getElementById('bestsellers-grid');
   if (!grid) return;
@@ -230,9 +224,7 @@ function renderBestSellers() {
   grid.innerHTML = bestsellers.map(p => buildProductCard(p, isWishlisted(p.id))).join('');
 }
 
-/* ============================================================
-   TESTIMONIALS
-   ============================================================ */
+
 function renderTestimonials() {
   const grid = document.getElementById('testimonials-grid');
   if (!grid) return;
@@ -248,9 +240,6 @@ function renderInstaGrid() {
   grid.innerHTML = INSTA_ITEMS.map(buildInstaItem).join('');
 }
 
-/* ============================================================
-   QUICK VIEW MODAL
-   ============================================================ */
 function openQuickView(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
@@ -333,9 +322,6 @@ function initNewsletter() {
   });
 }
 
-/* ============================================================
-   BACK TO TOP
-   ============================================================ */
 function initBackToTop() {
   const btn = document.getElementById('back-to-top');
   window.addEventListener('scroll', () => {
@@ -348,9 +334,6 @@ function initBackToTop() {
   });
 }
 
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
 function initReveal() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -366,9 +349,6 @@ function initReveal() {
   });
 }
 
-/* ============================================================
-   SMOOTH SCROLLING FOR NAV LINKS
-   ============================================================ */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
@@ -385,9 +365,7 @@ function initSmoothScroll() {
   });
 }
 
-/* ============================================================
-   SKELETON → PRODUCT TRANSITION
-   ============================================================ */
+
 function initProductsWithDelay() {
   setTimeout(() => {
     renderProducts();
@@ -395,9 +373,6 @@ function initProductsWithDelay() {
   }, 1600); // After loading screen
 }
 
-/* ============================================================
-   INIT ALL
-   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   initLoadingScreen();
   initThemeToggle();
