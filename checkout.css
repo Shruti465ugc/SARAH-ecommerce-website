@@ -1,9 +1,4 @@
-/* ============================================================
-   SARAH — CHECKOUT SYSTEM CSS
-   Extends style.css. All design tokens inherited from :root
-   ============================================================ */
 
-/* ---------- CHECKOUT OVERLAY ---------- */
 #checkout-overlay {
   position: fixed; inset: 0; z-index: 3000;
   background: rgba(20,15,12,0.65);
