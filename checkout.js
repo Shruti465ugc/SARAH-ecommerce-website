@@ -1,11 +1,6 @@
 'use strict';
 
-/* ============================================================
-   SARAH — CHECKOUT SYSTEM
-   Requires: products.js, cart.js, wishlist.js, app.js
-   ============================================================ */
 
-/* ---- CONSTANTS ---- */
 const COUPONS = { SARAH10: 0.10, WELCOME20: 0.20 };
 const GST_RATE = 0.05;
 const SHIPPING_THRESHOLD = 2999;
@@ -20,9 +15,7 @@ let savedAddress = JSON.parse(localStorage.getItem('sarah_address') || 'null');
 let orders = JSON.parse(localStorage.getItem('sarah_orders') || '[]');
 let currentTrackOrder = null;
 
-/* ============================================================
-   CHECKOUT OVERLAY OPEN/CLOSE
-   ============================================================ */
+
 function openCheckout() {
   checkoutStep = 1;
   appliedCoupon = null;
@@ -40,9 +33,6 @@ function closeCheckout() {
   document.body.style.overflow = '';
 }
 
-/* ============================================================
-   STEP MANAGEMENT
-   ============================================================ */
 function showCheckoutPanel(step) {
   checkoutStep = step;
   // Update step indicators
@@ -57,9 +47,6 @@ function showCheckoutPanel(step) {
   document.getElementById('checkout-success')?.classList.remove('active');
 }
 
-/* ============================================================
-   SAVED ADDRESS BANNER
-   ============================================================ */
 function showSavedAddressBanner() {
   const banner = document.getElementById('saved-address-banner');
   if (!banner || !savedAddress) return;
@@ -83,9 +70,6 @@ function fillSavedAddress() {
   showToast('✦', 'Address filled from saved info');
 }
 
-/* ============================================================
-   ADDRESS VALIDATION
-   ============================================================ */
 function validateAddress() {
   let valid = true;
   const rules = {
@@ -128,9 +112,6 @@ function getAddressData() {
   return data;
 }
 
-/* ============================================================
-   PAYMENT VALIDATION
-   ============================================================ */
 function validatePayment() {
   const method = document.querySelector('input[name="payment"]:checked')?.value;
   if (!method) { showToast('⚠️', 'Please select a payment method'); return false; }
@@ -171,9 +152,6 @@ function validatePayment() {
   return true;
 }
 
-/* ============================================================
-   COUPON SYSTEM
-   ============================================================ */
 function applyCoupon() {
   const input = document.getElementById('coupon-input');
   const msgEl = document.getElementById('coupon-msg');
@@ -199,9 +177,6 @@ function applyCoupon() {
   }
 }
 
-/* ============================================================
-   ORDER SUMMARY CALCULATION & RENDER
-   ============================================================ */
 function getOrderTotals() {
   const subtotal = getCartTotal();
   const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_CHARGE;
@@ -244,9 +219,6 @@ function renderCheckoutSummary() {
   if (discountRow) discountRow.style.display = discount > 0 ? 'flex' : 'flex';
 }
 
-/* ============================================================
-   PLACE ORDER
-   ============================================================ */
 function placeOrder() {
   if (!validatePayment()) return;
 
@@ -285,9 +257,6 @@ function placeOrder() {
   showOrderSuccess(order);
 }
 
-/* ============================================================
-   ORDER SUCCESS
-   ============================================================ */
 function showOrderSuccess(order) {
   document.querySelectorAll('.checkout-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.checkout-step').forEach(el => el.classList.add('done'));
@@ -336,9 +305,6 @@ function showOrderSuccess(order) {
   showToast('🎉', `Order ${order.id} placed successfully!`);
 }
 
-/* ============================================================
-   MY ORDERS PAGE
-   ============================================================ */
 function openOrders() {
   orders = JSON.parse(localStorage.getItem('sarah_orders') || '[]');
   const overlay = document.getElementById('orders-overlay');
@@ -397,9 +363,6 @@ function renderOrders() {
   }).join('');
 }
 
-/* ============================================================
-   ORDER TRACKING
-   ============================================================ */
 const TRACKING_STEPS = [
   { label: 'Order Placed', icon: '📋', detail: 'Your order has been received' },
   { label: 'Processing', icon: '⚙️', detail: 'Being packed at our warehouse' },
@@ -456,9 +419,6 @@ function closeTracking() {
   document.getElementById('tracking-overlay')?.classList.remove('open');
 }
 
-/* ============================================================
-   PDF INVOICE (jsPDF)
-   ============================================================ */
 function downloadInvoice(orderId) {
   const order = orders.find(o => o.id === orderId);
   if (!order) return;
@@ -595,9 +555,7 @@ function generatePDF(order) {
   showToast('📄', 'Invoice downloaded!');
 }
 
-/* ============================================================
-   PAYMENT FIELDS TOGGLE
-   ============================================================ */
+   
 function initPaymentToggle() {
   document.querySelectorAll('input[name="payment"]').forEach(radio => {
     radio.addEventListener('change', () => {
@@ -626,9 +584,7 @@ function initPaymentToggle() {
   });
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
+
 document.addEventListener('DOMContentLoaded', () => {
   // Checkout overlay close
   document.getElementById('checkout-close-btn')?.addEventListener('click', closeCheckout);
@@ -683,9 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('my-orders-nav')?.addEventListener('click', openOrders);
 });
 
-/* ============================================================
-   REVIEW PANEL
-   ============================================================ */
+
 function renderReviewPanel() {
   const panel = document.getElementById('checkout-panel-3');
   if (!panel) return;
